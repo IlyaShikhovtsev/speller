@@ -16,16 +16,16 @@ public class Main {
         properties.load(new FileInputStream("src/main/resources/bot.properties"));
         MessageManager messageManager = new MessageManager(properties.getProperty("X-ACM-Key"), properties.getProperty("X-ACM-Chanel"));
 
-        while(true) {
-            for(Message message : messageManager.getMessages()) {
+        while (true) {
+            for (Message message : messageManager.getMessages()) {
                 try {
                     String textMessage = message.getNextState().getMessage();
-                    if(textMessage.startsWith("/help")) {
+                    if (textMessage.startsWith("/help")) {
                         messageManager.sendMessage(LangUtil.createResponseMessage(
                                 message,
                                 new String(Files.readAllBytes(Paths.get("src/main/resources/helpText"))))
                         );
-                    } else if(textMessage.startsWith("/lang")) {
+                    } else if (textMessage.startsWith("/lang")) {
                         if (textMessage.split(" ").length > 1) {
                             languageResolver.setLanguage(
                                     message.getCaseId(),
