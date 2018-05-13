@@ -11,7 +11,12 @@ public class LanguageResolver {
     private Map<String, Language> languageMap = new HashMap<>();
 
     public void setLanguage(String caseId, String language) {
-            languageMap.put(caseId, Languages.getLanguageForShortCode(language));
+            try {
+                languageMap.put(caseId, Languages.getLanguageForShortCode(language));
+            } catch(Exception e) {
+                return;
+            }
+
     }
 
     public Language getLanguage(String caseId) {

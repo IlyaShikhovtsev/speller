@@ -26,8 +26,7 @@ public class Main {
                                 new String(Files.readAllBytes(Paths.get("src/main/resources/helpText"))))
                         );
                     } else if(textMessage.startsWith("/lang")) {
-                        if (textMessage.split(" ").length > 1)
-                        {
+                        if (textMessage.split(" ").length > 1) {
                             languageResolver.setLanguage(
                                     message.getCaseId(),
                                     textMessage.split(" ")[1]
