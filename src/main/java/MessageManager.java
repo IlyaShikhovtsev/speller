@@ -8,6 +8,8 @@ import java.net.URL;
 
 public class MessageManager {
 
+    private static MessageManager messageManager = null;
+
     private final String URL_GET = "https://api.acm.chat/getMessages";
     private final String APPLICATION_JSON = "application/json";
 
@@ -54,5 +56,12 @@ public class MessageManager {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public static MessageManager getInstance() {
+        if (messageManager == null) {
+            messageManager = new MessageManager(Main.properties.getProperty("X-ACM-Key"), Main.properties.getProperty("X-ACM-Chanel"));
+        }
+        return messageManager;
     }
 }

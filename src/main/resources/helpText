@@ -1,34 +1,6 @@
 Данный бот проверяет отправленные Вами сообщения на наличие ошибок.
 Доступные команды:
     /help
-    /lang xx
-Список доступных языков:
-    en - English
-    fa - Persian
-    fr - French
-    de - German
-    pl - Polish
-    ca - Catalan
-    it - Italian
-    br - Breton
-    nl - Dutch
-    pt - Portuguese
-    ru - Russian
-    ast - Asturian
-    be - Belarusian
-    zh - Chinese
-    da - Danish
-    eo - Esperanto
-    gl - Galician
-    el - Greek
-    ja - Japanese
-    km - Khmer
-    ro - Romanian
-    sk - Slovak
-    sl - Slovenian
-    sr - Serbian
-    es - Spanish
-    sv - Swedish
-    ta - Tamil
-    tl - Tagalog
-    uk - Ukrainian
+    /lang - текущий язык
+    /lang all - список доступных языков
+    /lang xx - установить язык
