@@ -1,5 +1,5 @@
 import model.Message;
-import model.ResponseMessage;
+import util.LangUtil;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -21,7 +21,7 @@ public class Main {
                 try {
                     String textMessage = message.getNextState().getMessage();
                     if(textMessage.startsWith("/help")) {
-                        messageManager.sendMessage(createResponseMessage(
+                        messageManager.sendMessage(LangUtil.createResponseMessage(
                                 message,
                                 new String(Files.readAllBytes(Paths.get("src/main/resources/helpText"))))
                         );
@@ -32,12 +32,12 @@ public class Main {
                                     textMessage.split(" ")[1]
                             );
                         }
-                        messageManager.sendMessage(createResponseMessage(
+                        messageManager.sendMessage(LangUtil.createResponseMessage(
                                 message,
                                 "Выбранный язык - " + languageResolver.getLanguage(message.getCaseId()).getName())
                         );
                     } else {
-                        messageManager.sendMessage(createResponseMessage(
+                        messageManager.sendMessage(LangUtil.createResponseMessage(
                                 message,
                                 langTool.getChecked(message.getNextState().getMessage(), languageResolver.getLanguage(message.getCaseId())))
                         );
@@ -48,13 +48,4 @@ public class Main {
             }
         }
     }
-
-    private static ResponseMessage createResponseMessage(Message message, String text) {
-        return new ResponseMessage(
-                message.getCaseId(),
-                message.getTeamName(),
-                text,
-                new String[0]);
-    }
-
 }
