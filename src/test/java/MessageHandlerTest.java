@@ -1,5 +1,6 @@
 import model.ResponseMessage;
 import org.junit.Test;
+import org.languagetool.language.Russian;
 
 import java.util.Properties;
 
@@ -32,7 +33,7 @@ public class MessageHandlerTest {
 
     private void printResult(String message, String lang) {
         try {
-            System.out.println(new LangTool().getChecked(message, lang));
+            System.out.println(new LangTool().getChecked(message, new Russian()));
         } catch (Exception e) {
             e.printStackTrace();
         }

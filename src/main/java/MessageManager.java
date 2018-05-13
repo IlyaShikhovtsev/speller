@@ -2,10 +2,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import model.Message;
 import model.ResponseMessage;
 
-import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Properties;
 
 public class MessageManager {
 
@@ -24,10 +23,6 @@ public class MessageManager {
 
     public Message[] getMessages() {
         try {
-            Properties properties = new Properties();
-
-            FileInputStream fis = new FileInputStream("src/main/resources/bot.properties");
-            properties.load(fis);
             URL url = new URL(URL_GET);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
@@ -35,10 +30,10 @@ public class MessageManager {
             con.setRequestProperty("X-ACM-Chanel", xAcmChanel);
 
             return mapper.readValue(con.getInputStream(), Message[].class);
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     public boolean sendMessage(ResponseMessage message) {
@@ -54,9 +49,10 @@ public class MessageManager {
             con.setRequestProperty("X-ACM-Transmitter", message.getTeamName());
             mapper.writeValue(con.getOutputStream(), message);
             con.getResponseCode();
-        } catch (Exception e) {
+            return true;
+        } catch (IOException e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
 }
