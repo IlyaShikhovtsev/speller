@@ -3,6 +3,8 @@ import model.ResponseMessage;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 public class Main {
@@ -19,12 +21,27 @@ public class Main {
                 try {
                     String textMessage = message.getNextState().getMessage();
                     if(textMessage.startsWith("/help")) {
-
+                        messageManager.sendMessage(createResponseMessage(
+                                message,
+                                new String(Files.readAllBytes(Paths.get("src/main/resources/helpText"))))
+                        );
                     } else if(textMessage.startsWith("/lang")) {
-                        languageResolver.setLanguage(textMessage.split(" ")[1], message.getCaseId());
+                        if (textMessage.split(" ").length > 1)
+                        {
+                            languageResolver.setLanguage(
+                                    message.getCaseId(),
+                                    textMessage.split(" ")[1]
+                            );
+                        }
+                        messageManager.sendMessage(createResponseMessage(
+                                message,
+                                "Выбранный язык - " + languageResolver.getLanguage(message.getCaseId()).getName())
+                        );
                     } else {
-                        ResponseMessage responseMessage = new ResponseMessage(message.getCaseId(), message.getTeamName(), langTool.getChecked(message.getNextState().getMessage(), "ru"), new String[0]);
-                        messageManager.sendMessage(responseMessage);
+                        messageManager.sendMessage(createResponseMessage(
+                                message,
+                                langTool.getChecked(message.getNextState().getMessage(), languageResolver.getLanguage(message.getCaseId())))
+                        );
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -33,6 +50,12 @@ public class Main {
         }
     }
 
-
+    private static ResponseMessage createResponseMessage(Message message, String text) {
+        return new ResponseMessage(
+                message.getCaseId(),
+                message.getTeamName(),
+                text,
+                new String[0]);
+    }
 
 }

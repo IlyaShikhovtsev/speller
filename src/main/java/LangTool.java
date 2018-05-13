@@ -1,14 +1,14 @@
 import org.languagetool.AnalyzedSentence;
 import org.languagetool.JLanguageTool;
-import org.languagetool.Languages;
+import org.languagetool.Language;
 import org.languagetool.rules.RuleMatch;
 
 import java.util.List;
 
 public class LangTool {
 
-    public String getChecked(String message, String language) throws Exception {
-        JLanguageTool langTool = new JLanguageTool(Languages.getLanguageForShortCode(language));
+    public String getChecked(String message, Language language) throws Exception {
+        JLanguageTool langTool = new JLanguageTool(language);
         List<RuleMatch> matches = langTool.check(message);
         List<AnalyzedSentence> sentences = langTool.analyzeText(message);
 
@@ -37,9 +37,5 @@ public class LangTool {
         }
 
         return content.toString();
-    }
-
-    public String getChecked2(String message) throws Exception {
-        return getChecked(message, "ru");
     }
 }
