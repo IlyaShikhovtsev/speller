@@ -47,6 +47,10 @@ public class MessageHandler {
             result = setLanguage(command, caseId);
         } else {
             switch (command) {
+                case "ast": {
+                    result = setLanguage(command, caseId);
+                    break;
+                }
                 case "all": {
                     result = getAllLanguages();
                     break;
@@ -86,7 +90,7 @@ public class MessageHandler {
                     caseId,
                     language
             );
-            return "Language " + languageResolver.getLanguage(caseId);
+            return "Language changed to " + languageResolver.getLanguage(caseId);
         } catch (IllegalArgumentException e) {
             return "Вы указали неподдерживаемый язык ;(\nВведите \"/lang all\" для просмотра доступных языков";
         }
