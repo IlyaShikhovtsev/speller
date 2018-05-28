@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 public class MessageHandler {
 
     private LanguageResolver languageResolver = LanguageResolver.getInstance();
+    private ServiceResolver serviceResolver = ServiceResolver.getInstance();
     private LangTool langTool = new LangTool();
 
     private String helpCommand;
@@ -18,23 +19,70 @@ public class MessageHandler {
         String textMessage = message.getNextState().getMessage();
         String responseMessage;
         if (textMessage.startsWith("/")) {
-            switch (textMessage.split(" ")[0]) {
-                case "/help": {
-                    responseMessage = helpCommand();
+            switch (serviceResolver.getService(message.getCaseId())) {
+                case ServiceResolver.langToolService: {
+                    responseMessage = langToolCommands(textMessage, message);
                     break;
                 }
-                case "/lang": {
-                    responseMessage = langCommand(textMessage, message.getCaseId());
+                case ServiceResolver.spellerService: {
+                    responseMessage = spellerComands(textMessage, message);
                     break;
                 }
                 default: {
-                    responseMessage = "Неизвестная команда ;(";
+                    responseMessage = "Неверный сервис";
                 }
             }
         } else {
-            responseMessage = langTool.getChecked(message.getNextState().getMessage(), languageResolver.getLanguage(message.getCaseId()));
+            responseMessage = CheckText(textMessage, message);
         }
         messageManager.sendMessage(LangUtil.createResponseMessage(message, responseMessage));
+    }
+
+    private String CheckText(String textMessage, Message message) {
+        switch (serviceResolver.getService(message.getCaseId())) {
+            case ServiceResolver.langToolService: {
+                return langTool.getChecked(textMessage, languageResolver.getLanguage(message.getCaseId()));
+            }
+            case ServiceResolver.spellerService: {
+                return YandexSpeller.CheckText(textMessage);
+            }
+            default: {
+                return "Что-то пошло не так ;(";
+            }
+        }
+    }
+
+    private String spellerComands(String textMessage, Message message) {
+        switch (textMessage.split(" ")[0]) {
+            case "/langtool": {
+                serviceResolver.setService(message.getCaseId(), ServiceResolver.langToolService);
+                return "Выбран LanguageTool";
+            }
+            case "/help": {
+                return helpCommand();
+            }
+            default: {
+                return "Неверная команда ;(";
+            }
+        }
+    }
+
+    private String langToolCommands(String textMessage, Message message) {
+        switch (textMessage.split(" ")[0]) {
+            case "/speller": {
+                serviceResolver.setService(message.getCaseId(), ServiceResolver.spellerService);
+                return "Выбран Яндекс.Спеллер";
+            }
+            case "/help": {
+                return helpCommand();
+            }
+            case "/lang": {
+                return langCommand(textMessage, message.getCaseId());
+            }
+            default: {
+                return "Неверная команда ;(";
+            }
+        }
     }
 
     private String langCommand(String textMessage, String caseId) {
