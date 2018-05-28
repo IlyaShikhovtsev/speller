@@ -91,7 +91,7 @@ public class MessageHandler {
         }
         String result = "Неизвестная команда ;(";
         String command = textMessage.split(" ")[1];
-        if (command.length() == 2) {
+        if (command.length() == 2 || command.length() == 5) {
             result = setLanguage(command, caseId);
         } else {
             switch (command) {
