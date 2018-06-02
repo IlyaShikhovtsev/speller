@@ -7,8 +7,8 @@ public class ServiceResolver {
     private String defaultService;
     private Map<String, String> serviceMap = new HashMap<>();
 
-    public static final String langToolService = "LanguageToolService";
-    public static final String spellerService = "SpellerService";
+    public static final String LANGUAGE_TOOL_SERVICE = "LanguageToolService";
+    public static final String SPELLER_SERVICE = "SpellerService";
 
     public ServiceResolver() {
         defaultService = "LanguageToolService";

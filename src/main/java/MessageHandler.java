@@ -23,11 +23,11 @@ public class MessageHandler {
         String responseMessage;
         if (textMessage.startsWith("/")) {
             switch (serviceResolver.getService(message.getCaseId())) {
-                case ServiceResolver.langToolService: {
+                case ServiceResolver.LANGUAGE_TOOL_SERVICE: {
                     responseMessage = langToolCommands(textMessage, message);
                     break;
                 }
-                case ServiceResolver.spellerService: {
+                case ServiceResolver.SPELLER_SERVICE: {
                     responseMessage = spellerComands(textMessage, message);
                     break;
                 }
@@ -36,17 +36,17 @@ public class MessageHandler {
                 }
             }
         } else {
-            responseMessage = CheckText(textMessage, message);
+            responseMessage = checkText(textMessage, message);
         }
         messageManager.sendMessage(LangUtil.createResponseMessage(message, responseMessage));
     }
 
-    private String CheckText(String textMessage, Message message) {
+    private String checkText(String textMessage, Message message) {
         switch (serviceResolver.getService(message.getCaseId())) {
-            case ServiceResolver.langToolService: {
+            case ServiceResolver.LANGUAGE_TOOL_SERVICE: {
                 return langTool.getChecked(textMessage, languageResolver.getLanguage(message.getCaseId()));
             }
-            case ServiceResolver.spellerService: {
+            case ServiceResolver.SPELLER_SERVICE: {
                 return YandexSpeller.CheckText(textMessage);
             }
             default: {
@@ -58,7 +58,7 @@ public class MessageHandler {
     private String spellerComands(String textMessage, Message message) {
         switch (textMessage.split(" ")[0]) {
             case "/langtool": {
-                serviceResolver.setService(message.getCaseId(), ServiceResolver.langToolService);
+                serviceResolver.setService(message.getCaseId(), ServiceResolver.LANGUAGE_TOOL_SERVICE);
                 return "Выбран LanguageTool";
             }
             case "/speller": {
@@ -79,7 +79,7 @@ public class MessageHandler {
     private String langToolCommands(String textMessage, Message message) {
         switch (textMessage.split(" ")[0]) {
             case "/speller": {
-                serviceResolver.setService(message.getCaseId(), ServiceResolver.spellerService);
+                serviceResolver.setService(message.getCaseId(), ServiceResolver.SPELLER_SERVICE);
                 return "Выбран Яндекс.Спеллер";
             }
             case "/langtool": {
