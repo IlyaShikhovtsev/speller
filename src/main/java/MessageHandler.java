@@ -28,7 +28,7 @@ public class MessageHandler {
                     break;
                 }
                 case ServiceResolver.SPELLER_SERVICE: {
-                    responseMessage = spellerComands(textMessage, message);
+                    responseMessage = spellerCommands(textMessage, message);
                     break;
                 }
                 default: {
@@ -55,7 +55,7 @@ public class MessageHandler {
         }
     }
 
-    private String spellerComands(String textMessage, Message message) {
+    private String spellerCommands(String textMessage, Message message) {
         switch (textMessage.split(" ")[0]) {
             case "/langtool": {
                 serviceResolver.setService(message.getCaseId(), ServiceResolver.LANGUAGE_TOOL_SERVICE);
