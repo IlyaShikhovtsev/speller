@@ -58,11 +58,17 @@ public class MessageHandler {
                 serviceResolver.setService(message.getCaseId(), ServiceResolver.langToolService);
                 return "Выбран LanguageTool";
             }
+            case "/speller": {
+                return "Выбран Яндекс.Спеллер";
+            }
             case "/help": {
                 return helpCommand();
             }
+            case "/lang": {
+                return "Команды \"/lang\" доступны только в сервисе LangTool!\nДля выбора LangTool введите \"/langtool\"\nДля просмотра справки введите \"/help\"";
+            }
             default: {
-                return "Неверная команда ;(";
+                return "Неверная команда ;(\nДля просмотра справки введите \"/help\"";
             }
         }
     }
@@ -72,6 +78,9 @@ public class MessageHandler {
             case "/speller": {
                 serviceResolver.setService(message.getCaseId(), ServiceResolver.spellerService);
                 return "Выбран Яндекс.Спеллер";
+            }
+            case "/langtool": {
+                return "Выбран LanguageTool";
             }
             case "/help": {
                 return helpCommand();

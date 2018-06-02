@@ -22,7 +22,7 @@ public final class YandexSpeller {
                 StringBuilder sb = new StringBuilder(text);
                 sb.insert(message.getPos(), "[");
                 sb.insert(message.getPos()+message.getLen() + 1, "]");
-                String str = sb.toString().substring(message.getPos()-20 > 0 ? message.getPos() - 20 : 0, message.getPos()+message.getLen()+20 < text.length() ? message.getPos()+message.getLen()+20 : text.length()+1);
+                String str = sb.toString().substring(message.getPos()-20 > 0 ? message.getPos() - 20 : 0, message.getPos()+message.getLen()+20 < text.length() ? message.getPos()+message.getLen()+20 : text.length()+2);
                 sb = new StringBuilder(str);
                 sb.insert(0,"...");
                 sb.append("...");
