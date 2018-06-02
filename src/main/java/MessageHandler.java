@@ -2,8 +2,6 @@ import model.Message;
 import util.LangUtil;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 public class MessageHandler {
 
@@ -13,6 +11,11 @@ public class MessageHandler {
 
     private String helpCommand;
     private String allLanguages;
+
+    public MessageHandler() throws IOException {
+        helpCommand = LangUtil.read(ClassLoader.getSystemResourceAsStream("helpText"));
+        allLanguages = LangUtil.read(ClassLoader.getSystemResourceAsStream("allLanguages"));
+    }
 
     public void processMessage(Message message) {
         MessageManager messageManager = MessageManager.getInstance();
@@ -62,7 +65,7 @@ public class MessageHandler {
                 return "Выбран Яндекс.Спеллер";
             }
             case "/help": {
-                return helpCommand();
+                return helpCommand;
             }
             case "/lang": {
                 return "Команды \"/lang\" доступны только в сервисе LangTool!\nДля выбора LangTool введите \"/langtool\"\nДля просмотра справки введите \"/help\"";
@@ -83,7 +86,7 @@ public class MessageHandler {
                 return "Выбран LanguageTool";
             }
             case "/help": {
-                return helpCommand();
+                return helpCommand;
             }
             case "/lang": {
                 return langCommand(textMessage, message.getCaseId());
@@ -109,36 +112,12 @@ public class MessageHandler {
                     break;
                 }
                 case "all": {
-                    result = getAllLanguages();
+                    result = allLanguages;
                     break;
                 }
             }
         }
         return result;
-    }
-
-    private String getAllLanguages() {
-        try {
-            if (allLanguages == null) {
-                allLanguages = new String(Files.readAllBytes(Paths.get("src/main/resources/allLanguages")));
-            }
-            return allLanguages;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "Упс, что-то пошло не так ;(";
-        }
-    }
-
-    private String helpCommand() {
-        try {
-            if (helpCommand == null) {
-                helpCommand = new String(Files.readAllBytes(Paths.get("src/main/resources/helpText")));
-            }
-            return helpCommand;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "Упс, что-то пошло не так ;(";
-        }
     }
 
     private String setLanguage(String language, String caseId) {
